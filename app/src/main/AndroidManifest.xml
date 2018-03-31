@@ -21,16 +21,16 @@
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
-
         </activity>
-        <activity android:name=".ShowNotificationContent"></activity>
-
+        <activity android:name=".ShowNotificationContent" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_launcher_background" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
@@ -38,10 +38,8 @@
         <!-- [START fcm_default_channel] -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"/>
+            android:value="@string/default_notification_channel_id" />
         <!-- [END fcm_default_channel] -->
-
-
 
 
         <!-- Firebase Notifications -->
@@ -56,10 +54,12 @@
             </intent-filter>
         </service>
 
-        <!--Receiver Action From Notification-->
-        <receiver android:name=".notification.action.ActionReceiverNotification"></receiver>
+        <!-- Receiver Action From Notification -->
+        <receiver android:name=".notification.action.ActionReceiverNotification"
+            android:enabled="true"
+            android:exported="false"/>
 
-
+        <activity android:name=".ShowReplyContent"></activity>
     </application>
 
 </manifest>

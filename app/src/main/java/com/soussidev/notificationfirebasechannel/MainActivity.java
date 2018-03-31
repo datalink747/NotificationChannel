@@ -4,20 +4,27 @@ import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.RemoteInput;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.soussidev.notificationfirebasechannel.notification.Config;
 
@@ -27,12 +34,37 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private BroadcastReceiver broadcastReceiver;
+    private TextView getReply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("Broadcast.to.activity.transfer");
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //UI update here
+                if (intent != null)
+                {
+                  getReply.setText(intent.getStringExtra("data"));
+                    //This is used to close the notification tray
+                    Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+                    context.sendBroadcast(it);
+                }
+
+                   // Toast.makeText(MainActivity.this, intent.getStringExtra("data").toString(), Toast.LENGTH_LONG).show();
+            }
+        };
+        registerReceiver(broadcastReceiver, filter);
+
+        getReply =(TextView)findViewById(R.id.notify_replay);
+
+
 
         // configure Notification Firebase
 
@@ -58,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
             String channelId_film  = getString(R.string.notification_channel_id_film);
             String channelName_film = getString(R.string.notification_channel_name_film);
 
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
 
             // create android channel default
             NotificationChannel all = new NotificationChannel(channelId,
@@ -129,5 +160,21 @@ public class MainActivity extends AppCompatActivity {
                 shortcutManager.setDynamicShortcuts(Arrays.asList(linkedin,twitter));
             }
         }
+
+
+
+
     }
+
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+
+
+
+    }
+
 }

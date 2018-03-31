@@ -3,6 +3,8 @@ package com.soussidev.notificationfirebasechannel.notification.action;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.RemoteInput;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,48 +16,34 @@ public class ActionReceiverNotification extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
-
         String action=intent.getStringExtra("notify");
 
+        try {
+            if(action.equals("getReplay")) {
+                Log.d("getReplay", String.valueOf(getMessageText(intent)));
+                Intent local = new Intent();
+                local.setAction("Broadcast.to.activity.transfer");
+                local.putExtra("data", getMessageText(intent));
+                context.sendBroadcast(local);
 
-        if(action.equals("Info")){
-            sendEmail(context, action);
-            sendAction(context,action);
-        }
-        else if(action.equals("News")){
-            sendEmail(context, action);
-            sendAction(context,action);
+            }
 
-        }
-        else if(action.equals("All")){
-            sendEmail(context, action);
-            sendAction(context,action);
-
-        }
-        else if(action.equals("Sport")){
-            sendEmail(context, action);
-            sendAction(context,action);
-
-        }
-        else if(action.equals("Film")){
-            sendEmail(context, action);
-            sendAction(context,action);
-
-        }
-        //This is used to close the notification tray
-        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        context.sendBroadcast(it);
-    }
-
-    public void sendEmail(Context context, String channel){
-        Toast.makeText(context,channel,Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+        e.printStackTrace();
     }
 
 
-    public void sendAction(Context context,String channel){
-        Log.d("ActionReceiver",channel);
+
+    }
+
+
+
+    private CharSequence getMessageText(Intent intent) {
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        if(remoteInput != null){
+            return remoteInput.getCharSequence("key_text_reply");
+        }
+        return null;
     }
 
 }

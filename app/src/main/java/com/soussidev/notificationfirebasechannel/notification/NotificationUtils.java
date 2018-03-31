@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,11 +17,17 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.RemoteInput;
+import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import com.soussidev.notificationfirebasechannel.MainActivity;
 import com.soussidev.notificationfirebasechannel.R;
+import com.soussidev.notificationfirebasechannel.ShowNotificationContent;
+import com.soussidev.notificationfirebasechannel.ShowReplyContent;
 import com.soussidev.notificationfirebasechannel.notification.action.ActionReceiverNotification;
 
 import java.io.IOException;
@@ -152,6 +159,7 @@ public class NotificationUtils {
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
         notificationManager.notify(NotificationID.getID(), notification);
     }
 
@@ -176,6 +184,7 @@ public class NotificationUtils {
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
         notificationManager.notify(NotificationID.getID(), notification);
     }
     /**
@@ -200,16 +209,39 @@ public class NotificationUtils {
 
 
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        String channelId  = mContext.getString(R.string.default_notification_channel_id);
-        String channelName = mContext.getString(R.string.default_notification_channel_name);
-
         //This is the intent of PendingIntent
         Intent intentAction = new Intent(mContext,ActionReceiverNotification.class);
         //This is optional if you have more than one buttons and want to differentiate between two
-        intentAction.putExtra("notify",channel);
+        intentAction.putExtra("notify","getReplay");
         PendingIntent pIntentAction = PendingIntent.getBroadcast(mContext,1,intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // Add Replay Action to Notification
+
+        String KEY_TEXT_REPLY = "key_text_reply";
+
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel("Replay")
+                .build();
+//------------------------------------------------------------------------------
+        // methode 1
+        Intent intent = new Intent(mContext,ShowReplyContent.class);
+        TaskStackBuilder taskStack = TaskStackBuilder.create(mContext);
+        taskStack.addParentStack(ShowReplyContent.class);
+        taskStack.addNextIntent(intent);
+
+        PendingIntent pendingIntent = taskStack.getPendingIntent(100,PendingIntent.FLAG_UPDATE_CURRENT);
+//------------------------------------------------------------------------------
+        // methode 2
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("channel", message);
+        PendingIntent pendingIntent_activity = PendingIntent.getActivity(mContext,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//------------------------------------------------------------------------------
+        //Notification Action with RemoteInput instance added.
+        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+                android.R.drawable.sym_action_chat, "REPLY", pIntentAction)
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .build();
 
         NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
         bigPictureStyle.setBigContentTitle(title);
@@ -221,7 +253,8 @@ public class NotificationUtils {
                         .setSmallIcon(icon)
                         .setTicker(title)
                         .setWhen(0)
-                        .addAction(R.mipmap.icon_send,"Show Channel",pIntentAction)
+                        .addAction(R.mipmap.icon_send,"Show Channel",pendingIntent_activity)
+                        .addAction(replyAction)
                         .setOngoing(true)
                         .setChannelId(get_Channel_ID(channel))
                         .setContentInfo(channel)
@@ -246,6 +279,9 @@ public class NotificationUtils {
 //            notificationManager.createNotificationChannel(channelNotification);
 //        }
 
+        // hide the notification after its selected
+        notificationBuilder.build().flags |= Notification.FLAG_AUTO_CANCEL;
+
         notificationManager.notify(NotificationID.getID() /* ID of notification */, notificationBuilder.build());
 
     }
@@ -264,14 +300,32 @@ public class NotificationUtils {
         //This is the intent of PendingIntent
         Intent intentAction = new Intent(mContext,ActionReceiverNotification.class);
         //This is optional if you have more than one buttons and want to differentiate between two
-        intentAction.putExtra("notify",channel);
-        PendingIntent pIntentAction = PendingIntent.getBroadcast(mContext,1,intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
+        intentAction.putExtra("notify","getReplay");
+        PendingIntent pIntentAction = PendingIntent.getBroadcast(mContext,NotificationID.getID(),intentAction,PendingIntent.FLAG_ONE_SHOT);
+
+        // Add Replay Action to Notification
+
+         String KEY_TEXT_REPLY = "key_text_reply";
+
+          RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel("Replay")
+                .build();
+
+        //Notification Action with RemoteInput instance added.
+        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
+                android.R.drawable.sym_action_chat, "REPLY", pIntentAction)
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .build();
+
+
+
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mContext, get_Channel_ID(channel))
                         .setSmallIcon(icon)
                         .setTicker(title)
-                        .addAction(R.mipmap.icon_send,"Show",pIntentAction)
+                        .addAction(replyAction)
                         .setOngoing(true)
                         .setAutoCancel(true)
                         .setContentTitle(title)
@@ -282,6 +336,7 @@ public class NotificationUtils {
         // .setSmallIcon(R.mipmap.ic_launcher)
         // .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon));
         // .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+
 
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);

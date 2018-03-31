@@ -1,6 +1,11 @@
 package com.soussidev.notificationfirebasechannel;
 
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.RemoteInput;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -16,10 +21,14 @@ public class ShowNotificationContent extends AppCompatActivity {
     private TextView articleTextView;
     private String title,message,image,time, channel;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_notification_content);
+
+
+
 
         //Function InitUI
         InitView();
@@ -27,6 +36,9 @@ public class ShowNotificationContent extends AppCompatActivity {
         //receive data from MyFirebaseMessagingService class
 
         Intent intent = getIntent();
+
+
+
 
         title = intent.getStringExtra("title");
         message = intent.getStringExtra("message");
@@ -71,4 +83,7 @@ public class ShowNotificationContent extends AppCompatActivity {
         }
 
     }
+
+
+
 }
