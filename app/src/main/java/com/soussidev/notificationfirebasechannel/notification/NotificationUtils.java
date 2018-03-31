@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.util.Patterns;
 
 import com.soussidev.notificationfirebasechannel.R;
+import com.soussidev.notificationfirebasechannel.notification.action.ActionReceiverNotification;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -202,6 +203,14 @@ public class NotificationUtils {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         String channelId  = mContext.getString(R.string.default_notification_channel_id);
         String channelName = mContext.getString(R.string.default_notification_channel_name);
+
+        //This is the intent of PendingIntent
+        Intent intentAction = new Intent(mContext,ActionReceiverNotification.class);
+        //This is optional if you have more than one buttons and want to differentiate between two
+        intentAction.putExtra("notify",channel);
+        PendingIntent pIntentAction = PendingIntent.getBroadcast(mContext,1,intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
         NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
         bigPictureStyle.setBigContentTitle(title);
         bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
@@ -212,7 +221,8 @@ public class NotificationUtils {
                         .setSmallIcon(icon)
                         .setTicker(title)
                         .setWhen(0)
-                       // .setGroup(channel)
+                        .addAction(R.mipmap.icon_send,"Show Channel",pIntentAction)
+                        .setOngoing(true)
                         .setChannelId(get_Channel_ID(channel))
                         .setContentInfo(channel)
                         .setBadgeIconType(icon)
@@ -247,16 +257,22 @@ public class NotificationUtils {
     private void showSmallNotification_channel(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound, String channel) {
 
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
         inboxStyle.addLine(message);
         String channelId  = mContext.getString(R.string.default_notification_channel_id);
         String channelName = mContext.getString(R.string.default_notification_channel_name);
+
+        //This is the intent of PendingIntent
+        Intent intentAction = new Intent(mContext,ActionReceiverNotification.class);
+        //This is optional if you have more than one buttons and want to differentiate between two
+        intentAction.putExtra("notify",channel);
+        PendingIntent pIntentAction = PendingIntent.getBroadcast(mContext,1,intentAction,PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mContext, get_Channel_ID(channel))
                         .setSmallIcon(icon)
                         .setTicker(title)
-                        //.setWhen(0)
+                        .addAction(R.mipmap.icon_send,"Show",pIntentAction)
+                        .setOngoing(true)
                         .setAutoCancel(true)
                         .setContentTitle(title)
                         .setContentIntent(resultPendingIntent)

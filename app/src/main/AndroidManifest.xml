@@ -56,6 +56,9 @@
             </intent-filter>
         </service>
 
+        <!--Receiver Action From Notification-->
+        <receiver android:name=".notification.action.ActionReceiverNotification"></receiver>
+
 
     </application>
 
