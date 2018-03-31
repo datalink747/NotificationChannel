@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "736206373277",
+    "firebase_url": "https://soussidev.firebaseio.com",
+    "project_id": "firebase-soussidev",
+    "storage_bucket": "firebase-soussidev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736206373277:android:8fdf97d913631aa5",
+        "android_client_info": {
+          "package_name": "com.soussidev.notificationfirebasechannel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736206373277-6vs18tguv7vjh8k5p1tk1q0iu9nbuaom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.soussidev.notificationfirebasechannel",
+            "certificate_hash": "d26fdac49063b590ebc3d921d9baaa5f66d889b7"
+          }
+        },
+        {
+          "client_id": "736206373277-6do0usnhk3qtf4726o29fo232vcvvgqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5BUpe6E9TmO76Pe8pai5O_rmVI0g9k2Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736206373277-6do0usnhk3qtf4726o29fo232vcvvgqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

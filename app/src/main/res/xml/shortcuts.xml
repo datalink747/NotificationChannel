@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="compose1"
+        android:enabled="true"
+        android:icon="@drawable/imgnotification"
+        android:shortcutShortLabel="@string/shortcuts_name_MainActivity"
+        android:shortcutLongLabel="@string/shortcuts_name_long_MainActivity"
+        android:shortcutDisabledMessage="@string/shortcuts_disabled_message_MainActivity">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.soussidev.notificationfirebasechannel"
+            android:targetClass="com.soussidev.notificationfirebasechannel.MainActivity" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+
+    <!--<shortcut
+        android:shortcutId="compose2"
+        android:enabled="true"
+        android:icon="@drawable/imgnotification"
+        android:shortcutShortLabel="@string/shortcuts_name_ShowNotificationContent"
+        android:shortcutLongLabel="@string/shortcuts_name_long_ShowNotificationContent"
+        android:shortcutDisabledMessage="@string/shortcuts_disabled_message_ShowNotificationContent">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.soussidev.notificationfirebasechannel"
+            android:targetClass="com.soussidev.notificationfirebasechannel.MainActivity" />
+        &lt;!&ndash; If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. &ndash;&gt;
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>-->
+</shortcuts>
+
+

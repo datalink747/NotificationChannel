@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">NotificationFirebaseChannel</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="notification_channel_id_info" translatable="false">com.soussidev.notificationfirebasechannel.info</string>
+    <string name="notification_channel_id_news" translatable="false">com.soussidev.notificationfirebasechannel.news</string>
+    <string name="notification_channel_id_sport" translatable="false">com.soussidev.notificationfirebasechannel.sport</string>
+    <string name="notification_channel_id_film" translatable="false">com.soussidev.notificationfirebasechannel.film</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <string name="default_notification_channel_name" translatable="true">ALL</string>
+    <string name="notification_channel_name_info" translatable="true">Info</string>
+    <string name="notification_channel_name_news" translatable="true">News</string>
+    <string name="notification_channel_name_sport" translatable="true">Sport</string>
+    <string name="notification_channel_name_film" translatable="true">Film</string>
+
+    <!--Shortcuts For MainActivity-->
+    <string name="shortcuts_name_MainActivity">MainActivity</string>
+    <string name="shortcuts_name_long_MainActivity">Start MainActivity</string>
+    <string name="shortcuts_disabled_message_MainActivity">Erreur MainActivity</string>
+    <!--Shortcuts For ShowNotificationContent-->
+    <string name="shortcuts_name_ShowNotificationContent">Notification Content</string>
+    <string name="shortcuts_name_long_ShowNotificationContent">show Notification Content</string>
+    <string name="shortcuts_disabled_message_ShowNotificationContent">Erreur Notification</string>
+    <!--Using For Dynamic Shortcuts-->
+    <string name="web_linkedin">https://www.linkedin.com/in/soussimohamed/</string>
+    <string name="web_twitter">https://twitter.com/soussimohamed7</string>
+</resources>
